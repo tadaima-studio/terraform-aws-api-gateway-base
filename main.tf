@@ -70,7 +70,7 @@ resource "aws_api_gateway_integration" "this" {
   type = "MOCK"
 }
 
-resource "aws_api_gateway_method_response" "200" {
+resource "aws_api_gateway_method_response" "this-200" {
   rest_api_id = aws_api_gateway_rest_api.this.id
   resource_id = aws_api_gateway_resource.this.id
   http_method = aws_api_gateway_method.this.http_method
@@ -81,5 +81,5 @@ resource "aws_api_gateway_integration_response" "this" {
   rest_api_id = aws_api_gateway_rest_api.this.id
   resource_id = aws_api_gateway_resource.this.id
   http_method = aws_api_gateway_method.this.http_method
-  status_code = aws_api_gateway_method_response.200.status_code
+  status_code = aws_api_gateway_method_response.this-200.status_code
 }
