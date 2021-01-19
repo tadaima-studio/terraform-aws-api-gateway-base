@@ -24,6 +24,7 @@ resource "aws_api_gateway_request_validator" "this" {
 resource "aws_api_gateway_deployment" "this" {
   rest_api_id = aws_api_gateway_rest_api.this.id
   stage_name  = var.lambda_version
+  depends_on = ["aws_api_gateway_method.this"]
 }
 
 resource "aws_api_gateway_usage_plan" "this" {
@@ -43,4 +44,20 @@ resource "aws_api_gateway_usage_plan_key" "main" {
   key_id        = aws_api_gateway_api_key.this-key.id
   key_type      = "API_KEY"
   usage_plan_id = aws_api_gateway_usage_plan.this.id
+}
+
+###
+
+resource "aws_api_gateway_resource" "this" {
+  rest_api_id = aws_api_gateway_rest_api.this.id
+  parent_id = aws_api_gateway_rest_api.this.root_resource_id
+  path_part = "this"
+}
+
+resource "aws_api_gateway_method" "this" {
+  rest_api_id = aws_api_gateway_rest_api.this.id
+  resource_id = aws_api_gateway_resource.this.id
+  http_method = "GET"
+  authorization = "NONE"
+  api_key_required = true
 }
